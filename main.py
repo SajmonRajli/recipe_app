@@ -7,7 +7,21 @@ from data_base import request_db
 
 app = FastAPI()
 
-
+class User:
+    def __init__(self, id, nickname, status, favorites, date_of_creation, date_of_change):
+        self.id = id
+        self.nickname = nickname
+        self.status = status
+        self.favorites = favorites
+        self.date_of_creation = date_of_creation
+        self.date_of_change = date_of_change
+    def to_json(self):
+        return {"id": self.id,
+                "nickname": self.nickname,
+                "status": self.status,
+                "favorites": self.favorites,
+                "date_of_creation": self.date_of_creation,
+                "date_of_change": self.date_of_change}
 
 @app.get("/")
 def read_root():
@@ -36,3 +50,15 @@ def user_add(nickname: str):
         return {"response":res["response"]}
     else: 
         return {"response": f'имя мользователя "{nickname}" уже занято'}
+
+# Получениe профиля пользователя
+@app.get("/user/get/{nickname}")
+def user_get(nickname: str):
+    text_SQL = f"select * from users  where nickname = '{nickname}'"
+    res = request_db('recipe_app',text_SQL)
+    if res["response"] != []:
+        row = res["response"][0]
+        user = User(row[0],row[1],row[2],row[3],row[4],row[5])
+        return {"response": user.to_json()}
+    else: 
+        return {"response": f'имя мользователя "{nickname}" не найдено'}
