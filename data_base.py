@@ -29,6 +29,20 @@ def connection_db(database):
 									database=database)
 	return connection
 
+
+# отправка запроса 
+def request_db(database, text_SQL):
+	try:
+		connection = connection_db(database)
+		cursor = connection.cursor()
+		cursor.execute(text_SQL)
+		connection.commit()
+		cursor.close()
+		connection.close()
+		return 'successful request'
+	except Exception as e:
+		return e
+
 if __name__ == "__main__":
 	# создаем базу данных
 	create_db('recipe_app')
