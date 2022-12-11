@@ -37,11 +37,13 @@ def request_db(database, text_SQL):
 		cursor = connection.cursor()
 		cursor.execute(text_SQL)
 		connection.commit()
+		return {"response": cursor.fetchall()}
+	except Exception as e:
+		return {"exception": e}
+	finally:
 		cursor.close()
 		connection.close()
-		return 'successful request'
-	except Exception as e:
-		return e
+	
 
 if __name__ == "__main__":
 	# создаем базу данных
