@@ -28,22 +28,34 @@ class User:
                 "status": self.status,
                 "number_of_recipes": number_of_recipes}
 
+class Recipe:
+    def __init__(self, id, author, date_of_creation, date_of_change, name, type_of_dish, description, preparation_steps, photo, likes, hashtags, status):
+        self.id = id
+        self.author = author
+        self.date_of_creation = date_of_creation
+        self.date_of_change = date_of_change
+        self.name = name
+        self.type_of_dish = type_of_dish
+        self.description = description
+        self.preparation_steps = preparation_steps
+        self.photo = photo
+        self.likes = likes
+        self.hashtags = hashtags
+        self.status = status
+    def to_json(self):
+        return {"id": self.id,
+                "author": self.author,
+                "date_of_creation": self.date_of_creation,
+                "date_of_change": self.date_of_change,
+                "name": self.name,
+                "type_of_dish": self.type_of_dish,
+                "description": self.description,
+                "preparation_steps": self.preparation_steps,
+                "photo": self.photo,
+                "likes": self.likes,
+                "hashtags": self.hashtags,
+                "status": self.status}
 
-
-
-
-
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"} 
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
-
-	
 # Регистрация
 @app.get("/user/add/{nickname}")
 def user_add(nickname: str):
@@ -84,7 +96,7 @@ def user_get(nickname: str):
 
 
 #Класс для post запроса
-class Recipe(BaseModel): 
+class Recipe_post(BaseModel): 
     author: int
     name: str
     type_of_dish: str = None
@@ -94,7 +106,7 @@ class Recipe(BaseModel):
     hashtags: str = None
 # Добавление пользователем рецепта
 @app.post("/recipe/add/")
-def recipe_add(item: Recipe):
+def recipe_add(item: Recipe_post):
     date_of_creation = date.today()
     id_recipe = int(datetime.now().timestamp())
     likes = 0
@@ -118,3 +130,18 @@ def recipe_add(item: Recipe):
         '''
     res = request_db('recipe_app',text_SQL)
     return {"response":res["response"]}
+
+# Получениe рецепта
+@app.get("/recipe/get/{id}")
+def recipe_get(id: int):
+    text_SQL = f"select * from recipes  where id = '{id}'"
+    res = request_db('recipe_app',text_SQL)
+    if res["response"] != []:
+        row = res["response"][0]
+        print(row[0])
+        print(row[11])
+        recipe = Recipe(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11])
+
+        return {"response": recipe.to_json()}
+    else: 
+        return {"response": f'рецепт не найден'}
