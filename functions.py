@@ -1,5 +1,13 @@
+from data_base import request_db
+from pydantic import BaseModel
 
-
+# Проверка статуса пользователя
+def get_status_user(id):
+    text_SQL = f"select * from users  where id = '{id}'"
+    res = request_db('recipe_app',text_SQL)
+    row = res["response"][0]
+    user = User(row[0],row[1],row[2],row[3],row[4],row[5])
+    return user.status
 
 class User:
     def __init__(self, id, nickname, status, favorites, date_of_creation, date_of_change):
@@ -50,3 +58,12 @@ class Recipe:
                 "hashtags": self.hashtags,
                 "status": self.status}
 
+#Класс для post запроса добавления рецепта
+class Recipe_post(BaseModel): 
+    author: int
+    name: str
+    type_of_dish: str = None
+    description: str = None
+    preparation_steps: str = None
+    photo: str = None
+    hashtags: str = None
