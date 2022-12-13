@@ -1,0 +1,628 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+      "title": "FastAPI",
+      "version": "0.1.0"
+    },
+    "paths": {
+      "/user/add/{nickname}": {
+        "get": {
+          "summary": "User Add",
+          "operationId": "user_add_user_add__nickname__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Nickname",
+                "type": "string"
+              },
+              "name": "nickname",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/login/{nickname}": {
+        "get": {
+          "summary": "User Login",
+          "operationId": "user_login_user_login__nickname__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Nickname",
+                "type": "string"
+              },
+              "name": "nickname",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/remove/nickname={nickname}&login={login}": {
+        "get": {
+          "summary": "User Remove",
+          "operationId": "user_remove_user_remove_nickname__nickname__login__login__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Nickname",
+                "type": "string"
+              },
+              "name": "nickname",
+              "in": "path"
+            },
+            {
+              "required": true,
+              "schema": {
+                "title": "Login",
+                "type": "integer"
+              },
+              "name": "login",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/edit/nickname={nickname}&login={login}": {
+        "get": {
+          "summary": "User Edit",
+          "operationId": "user_edit_user_edit_nickname__nickname__login__login__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Nickname",
+                "type": "string"
+              },
+              "name": "nickname",
+              "in": "path"
+            },
+            {
+              "required": true,
+              "schema": {
+                "title": "Login",
+                "type": "integer"
+              },
+              "name": "login",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/get/nickname={nickname}&login={login}": {
+        "get": {
+          "summary": "User Get",
+          "operationId": "user_get_user_get_nickname__nickname__login__login__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Nickname",
+                "type": "string"
+              },
+              "name": "nickname",
+              "in": "path"
+            },
+            {
+              "required": true,
+              "schema": {
+                "title": "Login",
+                "type": "integer"
+              },
+              "name": "login",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/top": {
+        "get": {
+          "summary": "User Top",
+          "operationId": "user_top_user_top_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/recipe/add/": {
+        "post": {
+          "summary": "Recipe Add",
+          "operationId": "recipe_add_recipe_add__post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recipe_post"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/recipe/get/{id}&login={login}": {
+        "get": {
+          "summary": "Recipe Get",
+          "operationId": "recipe_get_recipe_get__id__login__login__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Id",
+                "type": "integer"
+              },
+              "name": "id",
+              "in": "path"
+            },
+            {
+              "required": true,
+              "schema": {
+                "title": "Login",
+                "type": "integer"
+              },
+              "name": "login",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/recipe/like/{id}&login={login}": {
+        "get": {
+          "summary": "Recipe Like",
+          "operationId": "recipe_like_recipe_like__id__login__login__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Id",
+                "type": "integer"
+              },
+              "name": "id",
+              "in": "path"
+            },
+            {
+              "required": true,
+              "schema": {
+                "title": "Login",
+                "type": "integer"
+              },
+              "name": "login",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/recipe/remove/{id}&login={login}": {
+        "get": {
+          "summary": "Recipe Remove",
+          "operationId": "recipe_remove_recipe_remove__id__login__login__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Id",
+                "type": "integer"
+              },
+              "name": "id",
+              "in": "path"
+            },
+            {
+              "required": true,
+              "schema": {
+                "title": "Login",
+                "type": "integer"
+              },
+              "name": "login",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/login/{token}": {
+        "get": {
+          "summary": "Admin Login",
+          "operationId": "admin_login_admin_login__token__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Token",
+                "type": "string"
+              },
+              "name": "token",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/user_ban/{token}&id_user={id_user}": {
+        "get": {
+          "summary": "User Ban",
+          "operationId": "user_ban_admin_user_ban__token__id_user__id_user__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Token",
+                "type": "string"
+              },
+              "name": "token",
+              "in": "path"
+            },
+            {
+              "required": true,
+              "schema": {
+                "title": "Id User",
+                "type": "integer"
+              },
+              "name": "id_user",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/recipe_ban/{token}&id_recipe={id_recipe}": {
+        "get": {
+          "summary": "Recipe Ban",
+          "operationId": "recipe_ban_admin_recipe_ban__token__id_recipe__id_recipe__get",
+          "parameters": [
+            {
+              "required": true,
+              "schema": {
+                "title": "Token",
+                "type": "string"
+              },
+              "name": "token",
+              "in": "path"
+            },
+            {
+              "required": true,
+              "schema": {
+                "title": "Id Recipe",
+                "type": "integer"
+              },
+              "name": "id_recipe",
+              "in": "path"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "HTTPValidationError": {
+          "title": "HTTPValidationError",
+          "type": "object",
+          "properties": {
+            "detail": {
+              "title": "Detail",
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ValidationError"
+              }
+            }
+          }
+        },
+        "Recipe_post": {
+          "title": "Recipe_post",
+          "required": [
+            "author",
+            "name"
+          ],
+          "type": "object",
+          "properties": {
+            "author": {
+              "title": "Author",
+              "type": "integer"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            },
+            "type_of_dish": {
+              "title": "Type Of Dish",
+              "type": "string"
+            },
+            "description": {
+              "title": "Description",
+              "type": "string"
+            },
+            "preparation_steps": {
+              "title": "Preparation Steps",
+              "type": "string"
+            },
+            "photo": {
+              "title": "Photo",
+              "type": "string"
+            },
+            "hashtags": {
+              "title": "Hashtags",
+              "type": "string"
+            }
+          }
+        },
+        "ValidationError": {
+          "title": "ValidationError",
+          "required": [
+            "loc",
+            "msg",
+            "type"
+          ],
+          "type": "object",
+          "properties": {
+            "loc": {
+              "title": "Location",
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              }
+            },
+            "msg": {
+              "title": "Message",
+              "type": "string"
+            },
+            "type": {
+              "title": "Error Type",
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
