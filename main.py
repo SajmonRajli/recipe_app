@@ -66,7 +66,12 @@ def user_edit(nickname: str,login: int):
         text_SQL = f"select nickname from users  where nickname = '{nickname}'"
         res = request_db('recipe_app',text_SQL)
         if res["response"] == []:
-            text_SQL = f"UPDATE users SET nickname = '{nickname}' WHERE id={login}"
+            
+            date_of_change = date.today()
+            text_SQL = f"""
+            UPDATE users SET nickname = '{nickname}' WHERE id={login};
+            UPDATE users SET date_of_change = '{date_of_change}' WHERE id={login} 
+            """
             res = request_db('recipe_app',text_SQL)
             return {"response": 'Никнейм изменен'}
         else: 
