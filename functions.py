@@ -19,6 +19,13 @@ def get_status_user(id):
     row = res["response"][0]
     user = User(row[0],row[1],row[2],row[3],row[4],row[5])
     return user.status
+# Проверка статуса рецепта
+def get_status_recipe(id):
+    text_SQL = f"select * from recipes  where id = '{id}'"
+    res = request_db('recipe_app',text_SQL)
+    row = res["response"][0]
+    recipe = Recipe(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11])
+    return recipe.status
 
 class User:
     def __init__(self, id, nickname, status, favorites, date_of_creation, date_of_change):
