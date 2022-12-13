@@ -23,7 +23,7 @@ def user_add(nickname: str):
         res = request_db('recipe_app',text_SQL)
         return {"response":res["response"]}
     else: 
-        return {"response": f'имя мользователя "{nickname}" уже занято'}
+        return {"response": f'имя пользователя "{nickname}" уже занято'}
 
 # Авторизация 
 @app.get("/user/login/{nickname}")
@@ -35,7 +35,28 @@ def user_login(nickname: str):
         user = User(row[0],row[1],row[2],row[3],row[4],row[5])
         return {"response": user.to_json_all()}
     else: 
-        return {"response": f'имя мользователя "{nickname}" не найдено'}
+        return {"response": f'имя пользователя "{nickname}" не найдено'}
+
+# Удаление пользователем себя и своих рецептов
+@app.get("/user/remove/nickname={nickname}&login={login}")
+def user_remove(nickname: str, login: int):
+    text_SQL = f"select * from users  where nickname = '{nickname}'"
+    res = request_db('recipe_app',text_SQL)
+    if res["response"] != []:
+        row = res["response"][0]
+        user = User(row[0],row[1],row[2],row[3],row[4],row[5])
+        if login == user.id:
+            text_SQL = f"""
+            delete from recipes  where author = {user.id};
+            delete from users  where id = {user.id};
+
+            """
+            res = request_db('recipe_app',text_SQL)
+            return {"response": f'Аккаунт "{nickname}" удален'}
+
+    else: 
+        return {"response": f'Имя пользователя "{nickname}" не найдено'} 
+
 
 # Получениe профиля пользователя  
 @app.get("/user/get/nickname={nickname}&login={login}")
@@ -57,8 +78,28 @@ def user_get(nickname: str, login: int):
         else:
             return {"response": 'Вы заблокированы и не можете смотреть других пользователей'}
     else: 
-        return {"response": f'Имя мользователя "{nickname}" не найдено'}
+        return {"response": f'Имя пользователя "{nickname}" не найдено'}
 
+
+# Получение первых 10 пользователей (кроме заблокированных), отсортированных по количеству добавленных рецептов
+@app.get("/user/top")
+def user_top():
+    text_SQL = f"select * from users"
+    res = request_db('recipe_app',text_SQL)
+    list_top = []
+    for row in res["response"]:
+        user = User(row[0],row[1],row[2],row[3],row[4],row[5])
+        if user.status:
+            text_SQL = f"select id from recipes  where author = '{user.id}'"
+            res = request_db('recipe_app',text_SQL)
+            if res["response"] != []:
+                number_of_recipes = len(res["response"])
+            else: number_of_recipes = 0
+            list_top.append(user.to_json(number_of_recipes))
+
+    
+    list_top = sorted(list_top, reverse = True, key=lambda user: user["number_of_recipes"])[0:10]
+    return {"response": list_top}
 
 # Добавление пользователем рецепта
 @app.post("/recipe/add/")
@@ -108,6 +149,26 @@ def recipe_get(id: int, login: int):
     else: 
         return {"response": 'Вы заблокированы и не можете просматривать рецепты'}
 
+# Удаление своего рецепта
+@app.get("/recipe/remove/{id}&login={login}")
+def recipe_remove(id: int, login: int):
+    text_SQL = f"select * from recipes  where id = '{id}'"
+    res = request_db('recipe_app',text_SQL)
+    if res["response"] != []:
+        row = res["response"][0]
+        print(row[0])
+        print(row[11])
+        recipe = Recipe(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11])
+
+        if recipe.author == login:
+            text_SQL = f"delete from recipes  where id = {id};"
+            res = request_db('recipe_app',text_SQL)
+            return {"response": 'Рецепт удален'}
+        else:
+            return {"response": 'Нельзя удалить чужой рецепт'}
+
+    else: 
+        return {"response": 'Рецепт не найден'}
 
 # Админский API
 # Авторизация
