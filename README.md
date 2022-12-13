@@ -21,8 +21,11 @@ PYTHON LIBRARIES
 Функции
 # Регистрация
 Создание аккаунта с уникальным именем, возвращает информацию по созданному аккаунту.
+
 Запрос
+
 /user/add/{nickname}, где nickname - любое имя пользователя
+
 request.get(http://127.0.0.1:8000/user/add/Sajmon)
 
 Успешный ответ
@@ -33,7 +36,11 @@ request.get(http://127.0.0.1:8000/user/add/Sajmon)
 
 # Авторизация 
 Получение всей информации по аккаунту (необходим только id, для выполнения остальных запросов)
+
+Запрос
+
 /user/login/{nickname}, где nickname - любое имя пользователя
+
 request.get(http://127.0.0.1:8000/user/login/Sajmon)
 
 Успешный ответ
@@ -44,7 +51,9 @@ request.get(http://127.0.0.1:8000/user/login/Sajmon)
 
 # Удаление пользователем себя и своих рецептов
 Запрос 
+
 /user/remove/nickname={nickname}&login={login}, где nickname - любое имя пользователя, login - айди этого пользователя
+
 request.get(http://127.0.0.1:8000/user/remove/nickname=Sajmon&login=1670946380)
 
 Успешный ответ
@@ -55,7 +64,9 @@ request.get(http://127.0.0.1:8000/user/remove/nickname=Sajmon&login=1670946380)
 
 # Изменение своего никнейма
 Запрос 
+
 /user/edit/nickname={nickname}&login={login}, где nickname - новый ник пользователя, login - айди этого пользователя
+
 request.get(http://127.0.0.1:8000/user/edit/nickname=Sajmon&login=1670946380)
 
 Успешный ответ
@@ -67,7 +78,9 @@ request.get(http://127.0.0.1:8000/user/edit/nickname=Sajmon&login=1670946380)
 
 # Получениe профиля пользователя  
 Запрос 
+
 /user/get/nickname={nickname}&login={login}, где nickname - любое имя пользователя, login - айди пользователя, который отправляет запрос
+
 request.get(http://127.0.0.1:8000/user/get/nickname=Sajmon&login=1670946380)
 
 Успешный ответ
@@ -79,13 +92,17 @@ request.get(http://127.0.0.1:8000/user/get/nickname=Sajmon&login=1670946380)
 
 # Получение первых 10 пользователей (кроме заблокированных), отсортированных по количеству добавленных рецептов
 Запрос 
+
 /user/top
+
 request.get(http://127.0.0.1:8000/user/top)
+
 Успешный ответ
 - {"response":[{"id":1670946635,"nickname":"Pepefa","status":true,"number_of_recipes":10},{"id":1670793830,"nickname":"User","status":true,"number_of_recipes":8},{"id":1670946380,"nickname":"Sajmon","status":true,"number_of_recipes":7}]}
 
 # Добавление пользователем рецепта
 Запрос 
+
 /recipe/add/ - post запрос, которому необходимо передать json со всей информацией о рецепте
 
 data= {
@@ -104,6 +121,7 @@ data= {
 }
 
 Пример пост запроса с обязательными полями
+
 data= {
 "author": 1670946635,
 "name": "Мохито",
@@ -113,6 +131,7 @@ data= {
 "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/15-09-26-RalfR-WLC-0067.jpg/800px-15-09-26-RalfR-WLC-0067.jpg",
 "hashtags": "Мохито, Напиток, Лайм, Ром, Мята",
 }
+
 res = requests.post('http://127.0.0.1:8000/recipe/add/', json = data)
 
 
@@ -125,7 +144,9 @@ res = requests.post('http://127.0.0.1:8000/recipe/add/', json = data)
 
 # Получениe рецепта
 Запрос 
+
 /recipe/get/{id}&login={login}, где id - айди рецепта, login - айди пользователя, который отправляет запрос
+
 request.get(http://127.0.0.1:8000/recipe/get/1670947345&login=1670946380)
 
 Успешный ответ
@@ -138,7 +159,9 @@ request.get(http://127.0.0.1:8000/recipe/get/1670947345&login=1670946380)
 
 # Простановка лайка рецепту
 Запрос 
+
 /recipe/like/{id}&login={login}, где id - айди рецепта, login - айди пользователя, который отправляет запрос
+
 request.get(http://127.0.0.1:8000/recipe/like/1670947345&login=1670946380)
 
 Успешный ответ
@@ -151,7 +174,9 @@ request.get(http://127.0.0.1:8000/recipe/like/1670947345&login=1670946380)
 
 # Удаление своего рецепта
 Запрос 
+
 /recipe/remove/{id}&login={login}, где id - айди рецепта, login - айди пользователя, который отправляет запрос
+
 request.get(http://127.0.0.1:8000/recipe/remove/1670947345&login=1670946380)
 
 Успешный ответ
@@ -167,8 +192,11 @@ request.get(http://127.0.0.1:8000/recipe/remove/1670947345&login=1670946380)
 # Админский API
 # Авторизация
 Запрос 
+
 /admin/login/{token}, где токен - секретный ключ, указывается в файле config.ini
+
 request.get(http://127.0.0.1:8000/admin/login/your_token)
+
 Успешный ответ
 - {"response": 'Успешная авторизация'}
 
@@ -178,7 +206,9 @@ request.get(http://127.0.0.1:8000/admin/login/your_token)
 
 # Блокировка/разблокировка пользователя
 Запрос 
+
 /admin/user_ban/{token}&id_user={id_user}, где токен - секретный ключ, id_user - айди пользователя, которого надо заблокировать/разблокировать
+
 request.get(http://127.0.0.1:8000/admin/user_ban/your_token&id_user=1670946380)
 
 Успешный ответ
@@ -191,7 +221,9 @@ request.get(http://127.0.0.1:8000/admin/user_ban/your_token&id_user=1670946380)
 
 # Блокировка/разблокировка рецепта
 Запрос 
+
 /admin/recipe_ban/{token}&id_recipe={id_recipe}, где токен - секретный ключ, id_recipe - айди рецепта, который надо заблокировать/разблокировать
+
 request.get(http://127.0.0.1:8000/admin/recipe_ban/your_token&id_recipe=1670946380)
 
 Успешный ответ
