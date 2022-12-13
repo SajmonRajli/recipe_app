@@ -3,7 +3,7 @@ from typing import Union
 from fastapi import FastAPI
 from datetime import datetime, date, time
 from data_base import request_db
-from functions import User, Recipe, Recipe_post, get_status_user
+from functions import User, Recipe, Recipe_post, get_status_user, check_admin, get_status_recipe
 app = FastAPI()
 
 
@@ -57,7 +57,7 @@ def user_get(nickname: str, login: int):
         else:
             return {"response": 'Вы заблокированы и не можете смотреть других пользователей'}
     else: 
-        return {"response": f'имя мользователя "{nickname}" не найдено'}
+        return {"response": f'Имя мользователя "{nickname}" не найдено'}
 
 
 # Добавление пользователем рецепта
@@ -104,6 +104,50 @@ def recipe_get(id: int, login: int):
 
             return {"response": recipe.to_json()}
         else: 
-            return {"response": f'рецепт не найден'}
+            return {"response": 'Рецепт не найден'}
     else: 
         return {"response": 'Вы заблокированы и не можете просматривать рецепты'}
+
+
+# Админский API
+# Авторизация
+@app.get("/admin/login/{token}")
+def admin_login(token: str):
+    if check_admin(token):
+        return {"response": 'Успешная авторизация'}
+    else:
+        return {"response": 'Неверный токен'}
+
+# Блокировка/разблокировка пользователя
+@app.get("/admin/user_ban/{token}&id_user={id_user}")
+def user_ban(token: str, id_user: int):
+    if check_admin(token):
+
+        if get_status_user(id_user) == True:
+            text_SQL = f"UPDATE users SET status = false WHERE id={id_user}"
+            res = request_db('recipe_app',text_SQL)
+            return {"response": 'Пользователь заблокирован'}
+        elif get_status_user(id_user) == False:
+            text_SQL = f"UPDATE users SET status = true WHERE id={id_user}"
+            res = request_db('recipe_app',text_SQL)
+            return {"response": 'Пользователь разблокирован'}
+
+    else:
+        return {"response": 'Неверный токен'}
+
+# Блокировка/разблокировка рецепта
+@app.get("/admin/recipe_ban/{token}&id_recipe={id_recipe}")
+def recipe_ban(token: str, id_recipe: int):
+    if check_admin(token):
+
+        if get_status_recipe(id_recipe) == True:
+            text_SQL = f"UPDATE recipes SET status = false WHERE id={id_recipe}"
+            res = request_db('recipe_app',text_SQL)
+            return {"response": 'Рецепт заблокирован'}
+        elif get_status_recipe(id_recipe) == False:
+            text_SQL = f"UPDATE recipes SET status = true WHERE id={id_recipe}"
+            res = request_db('recipe_app',text_SQL)
+            return {"response": 'Рецепт разблокирован'}
+
+    else:
+        return {"response": 'Неверный токен'}
