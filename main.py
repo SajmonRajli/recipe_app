@@ -57,6 +57,23 @@ def user_remove(nickname: str, login: int):
     else: 
         return {"response": f'Имя пользователя "{nickname}" не найдено'} 
 
+# Изменение своего никнейма
+@app.get("/user/edit/nickname={nickname}&login={login}")
+def user_edit(nickname: str,login: int):
+    status = get_status_user(login)
+    if status == True:
+        
+        text_SQL = f"select nickname from users  where nickname = '{nickname}'"
+        res = request_db('recipe_app',text_SQL)
+        if res["response"] == []:
+            text_SQL = f"UPDATE users SET nickname = '{nickname}' WHERE id={login}"
+            res = request_db('recipe_app',text_SQL)
+            return {"response": 'Никнейм изменен'}
+        else: 
+            return {"response": f'имя пользователя "{nickname}" уже занято'}
+    else:
+        return {"response": 'Вы заблокированы'}
+
 
 # Получениe профиля пользователя  
 @app.get("/user/get/nickname={nickname}&login={login}")
@@ -148,6 +165,29 @@ def recipe_get(id: int, login: int):
             return {"response": 'Рецепт не найден'}
     else: 
         return {"response": 'Вы заблокированы и не можете просматривать рецепты'}
+
+
+
+# Простановка лайка рецепту
+@app.get("/recipe/like/{id}&login={login}")
+def recipe_like(id: int, login: int):
+    if get_status_user(login) == True:
+        text_SQL = f"select * from recipes  where id = '{id}'"
+        res = request_db('recipe_app',text_SQL)
+        if res["response"] != []:
+            row = res["response"][0]
+            print(row[0])
+            print(row[11])
+            recipe = Recipe(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11])
+            like = recipe.likes + 1
+            text_SQL = f"UPDATE recipes SET likes = {like} WHERE id={id}"
+            res = request_db('recipe_app',text_SQL)
+            return {"response": "Лайк"}
+        else: 
+            return {"response": 'Рецепт не найден'}
+    else: 
+        return {"response": 'Вы заблокированы'}
+
 
 # Удаление своего рецепта
 @app.get("/recipe/remove/{id}&login={login}")
