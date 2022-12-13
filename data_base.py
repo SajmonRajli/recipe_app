@@ -4,12 +4,20 @@ import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
+# config database
+user="postgres"
+password="postgres"
+host="127.0.0.1"
+port="5432"
+
+
+
 # функция создания базы
 def create_db(name_db):
-	connection = psycopg2.connect(user="postgres",
-									password="postgres",
-									host="127.0.0.1",
-									port="5432")
+	connection = psycopg2.connect(user=user,
+									password=password,
+									host=host,
+									port=port)
 	connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 	# Курсор для выполнения операций с базой данных
 	cursor = connection.cursor()
@@ -22,10 +30,10 @@ def create_db(name_db):
 
 # функция подключения к СУЩЕСТВУЮЩЕЙ базе данных
 def connection_db(database):
-	connection = psycopg2.connect(user="postgres",
-									password="postgres",
-									host="127.0.0.1",
-									port="5432",
+	connection = psycopg2.connect(user=user,
+									password=password,
+									host=host,
+									port=port,
 									database=database)
 	return connection
 
