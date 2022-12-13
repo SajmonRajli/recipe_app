@@ -1,5 +1,16 @@
 from data_base import request_db
 from pydantic import BaseModel
+import configparser
+
+# Проверка токена
+def check_admin(token):
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+    admin_token = config['Admin']['admin_token']
+    if token == admin_token:
+        return True
+    else: 
+        return False
 
 # Проверка статуса пользователя
 def get_status_user(id):
